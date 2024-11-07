@@ -1,13 +1,58 @@
-import { Text, Html, Environment, useGLTF, OrbitControls, Float, PresentationControls, ContactShadows } from '@react-three/drei'
+import { Text, Html, Environment, useGLTF, OrbitControls, Float, PresentationControls, ContactShadows, SpotLight, useAnimations } from '@react-three/drei'
+import { Leva, useControls } from 'leva'
+import { act, useEffect, useRef } from 'react'
+import * as THREE from 'three'
 
 
 export default function Experience()
 {   
-    const computer = useGLTF('./macbook.gltf')
+    const spotLightRef = useRef()
+
+    // // This is just playing around
+    // const spotLightProps = useControls('Spot Light', {
+    //     position:
+    //     {
+    //         value: { x: 0, y: 0, z: 0},
+    //         step: 0.1,
+    //         joystick: 'invertY'
+    //     },
+    //     distance: 
+    //     {
+    //         value: 5,
+    //         step: 1,
+    //         min: 0,
+    //         max: 100
+    //     }
+    // })
+    const computer = useGLTF('./models/macbook-animation.glb')
+    const {ref, actions, names } = useAnimations(computer.animations, computer.scene)
+
+    console.log( actions.TopAction )
+
+    useEffect(() =>
+    {
+        const action = actions.TopAction
+
+        action
+            .reset()
+            .fadeIn(0.5)
+            .setLoop(THREE.LoopOnce, 1)
+            .clampWhenFinished = true
+        
+        action.play()
+        return() =>
+        {
+            action.fadeOut(0.5)
+        }
+    }, [])
+
+
+    // const computer = useGLTF('./macbook.gltf')
     // const computer = useGLTF('https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/macbook/model.gltf')
 
-    return <>
 
+    return <>
+        {/* <Leva /> */}
         <Environment // This is using the city hdr preset for lighting
             preset='city' 
         /> 
@@ -35,6 +80,14 @@ export default function Experience()
                     rotation={[0.1, Math.PI, 0]}
                     position={[0, 0.55, -1.15]}
                 />
+
+                {/* <SpotLight 
+                    distance={spotLightProps.distance}
+                    angle={0.4}
+                    attenuation={5}
+                    anglePower={1}
+                    position={[spotLightProps.position.x, spotLightProps.position.y, spotLightProps.position.z]}
+                /> */}
                 {/* Laptop model */}
                 <primitive
                     object={computer.scene}
