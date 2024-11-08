@@ -2,6 +2,7 @@ import { Text, Html, Environment, useGLTF, OrbitControls, Float, PresentationCon
 import { Leva, useControls } from 'leva'
 import { act, useEffect, useRef } from 'react'
 import * as THREE from 'three'
+import Laptop from './Laptop'
 
 
 export default function Experience()
@@ -88,8 +89,10 @@ export default function Experience()
                     anglePower={1}
                     position={[spotLightProps.position.x, spotLightProps.position.y, spotLightProps.position.z]}
                 /> */}
+
                 {/* Laptop model */}
-                <primitive
+                <Laptop />
+                {/* <primitive
                     object={computer.scene}
                     position-y={-1.2} 
                 >
@@ -105,7 +108,9 @@ export default function Experience()
                     >
                         <iframe src='https://main--reids-portfolio.netlify.app/' />
                     </Html>
-                </primitive>
+                </primitive> */}
+
+
                 {/* The text */}
                 <Text
                     font='./bangers-v20-latin-regular.woff'
